@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ConversationComponent } from './routes/chat/conversation/conversation.component';
+import { RouterModule, Routes, provideRouter, withComponentInputBinding } from '@angular/router';
+import { ChatComponent } from './routes/chat/chat.component';
 
 const routes: Routes = [
-  {path:'chat/:id', component: ConversationComponent},
-  {path:'**', redirectTo:'chat/1'}
+  {path:'chat', component: ChatComponent},
+  {path:'**', redirectTo:'chat'}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), ConversationComponent],
+  imports: [ChatComponent],
+  providers:[provideRouter(routes, withComponentInputBinding())],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

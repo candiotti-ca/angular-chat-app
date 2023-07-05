@@ -1,20 +1,31 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
 import { Message } from 'src/app/models/Message';
+import { UsersService } from '../users/users.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessagesService {
-  messages: WritableSignal<Message[]> = signal([]);
+  private readonly usersService = inject(UsersService);
+  private readonly messages: WritableSignal<Message[]> = signal([]);
 
-  sendMessage(content:string, to: number):void{
-    const from = Math.random() > .5 ? 2 : 1;
+  sendMessageToUser(content:string, userId: number):void{
+    const from = this.usersService.loggedInUser().id;
 
     this.messages.mutate(list => list.push({
       content,
       from,
-      to,
+      to:userId,
       date: new Date()
     }));
+
+    console.log('writted message', this.messages())
+  }
+
+  getMessagesOfUser(userId: number): Signal<Message[]>{
+    return computed(() => {
+      console.log('compute for'+userId);
+      return this.messages().filter(message => message.to = userId);
+    })
   }
 }

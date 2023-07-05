@@ -1,7 +1,7 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessagesService } from 'src/app/services/messages/messages.service';
-import { ConversationComponent } from '../conversation/conversation.component';
+import { ConversationDetailsComponent } from '../conversation-details/conversation-details.component';
 
 @Component({
   selector: 'app-message-input',
@@ -10,14 +10,15 @@ import { ConversationComponent } from '../conversation/conversation.component';
   templateUrl: './message-input.component.html'
 })
 export class MessageInputComponent {
-  readonly chat = inject(ConversationComponent);
+  readonly conversationDetails = inject(ConversationDetailsComponent);
   private readonly messagesService = inject(MessagesService);
   text?:string;
 
   @HostListener('window:keydown.enter')
   sendMessage():void{
-    if (this.text) {
-      this.messagesService.sendMessage(this.text, this.chat.id);
+    const recipientId = this.conversationDetails.recipientId;
+    if (this.text && recipientId) {
+      this.messagesService.sendMessageToUser(this.text, recipientId);
     }
 
     this.text = undefined;

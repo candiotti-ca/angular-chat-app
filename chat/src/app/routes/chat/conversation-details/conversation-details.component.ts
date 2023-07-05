@@ -1,6 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, Input, Signal, computed, inject } from '@angular/core';
 import { Message } from 'src/app/models/Message';
 import { MessagesService } from 'src/app/services/messages/messages.service';
 import { ChatHeaderComponent } from '../chat-header/chat-header.component';
@@ -8,21 +7,26 @@ import { MessageInputComponent } from '../message-input/message-input.component'
 import { MessagePreviewComponent } from '../message-preview/message-preview.component';
 
 @Component({
-  selector: 'app-conversation',
+  selector: 'app-conversation-details',
   standalone: true,
   imports: [
     NgFor,
-    RouterModule,
     ChatHeaderComponent,
     MessagePreviewComponent,
     MessageInputComponent
   ],
-  templateUrl: './conversation.component.html'
+  templateUrl: './conversation-details.component.html'
 })
-export class ConversationComponent {
+export class ConversationDetailsComponent {
   private readonly messagesService = inject(MessagesService);
+  @Input({required:true}) recipientId?: number;//fixme input pas mis a jour, ou alors pas ecoute par le header et la conversation
 
-  @Input() id!: number;
-
-  readonly messages: Message[] = this.messagesService.messages();
+  readonly messages: Signal<Message[]> = computed(() => {
+    const tmp = this.recipientId;
+    if (tmp) {
+      return this.messagesService.getMessagesOfUser(tmp)();//fixme
+    }
+    
+    return [];
+  });
 }

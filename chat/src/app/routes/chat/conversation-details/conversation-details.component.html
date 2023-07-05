@@ -1,9 +1,9 @@
 <div class="h-full">
     <app-chat-header />
-
+    {{recipientId}}
     <div class="bg-slate-100 px-[30vw]"> 
         <div class="h-[83vh] overflow-y-auto">
-            <div *ngFor="let message of messages" class="mb-8">
+            <div *ngFor="let message of messages()" class="mb-8">
                 <app-message-preview [message]="message"/>
             </div>
         </div>
