@@ -1,0 +1,10 @@
+<div class="flex flex-col" [ngClass]="isMessageMine ? 'items-start' : 'items-end'">
+    <p class="rounded-3xl px-4 py-2 max-w-[80%]" [ngClass]="{
+        'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-end': !isMessageMine,
+        'bg-white text-slate-700': isMessageMine
+    }">
+    {{message?.content}}
+    </p>
+    
+    <span class="text-sm text-slate-700 mx-2">{{message?.date | date: 'shortTime'}}</span>
+</div>

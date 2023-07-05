@@ -1,0 +1,4 @@
+<div class="flex items-center bg-white rounded-full p-2">
+    <input class="px-4 py-2 focus:outline-none grow" [(ngModel)]="text" maxLength="999">
+    <button class="rounded-full w-[40px] h-[40px] bg-purple-500" [disabled]="!text" (click)="sendMessage()"></button>
+</div>
