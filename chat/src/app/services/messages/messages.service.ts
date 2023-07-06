@@ -1,4 +1,4 @@
-import { Injectable, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { Message } from 'src/app/models/Message';
 import { UsersService } from '../users/users.service';
 
@@ -7,7 +7,7 @@ import { UsersService } from '../users/users.service';
 })
 export class MessagesService {
   private readonly usersService = inject(UsersService);
-  private readonly messages: WritableSignal<Message[]> = signal([]);
+  readonly messages: WritableSignal<Message[]> = signal([]);
 
   sendMessageToUser(content:string, userId: number):void{
     const from = this.usersService.loggedInUser().id;
@@ -16,16 +16,8 @@ export class MessagesService {
       content,
       from,
       to:userId,
-      date: new Date()
+      date: new Date(),
+      read: false
     }));
-
-    console.log('writted message', this.messages())
-  }
-
-  getMessagesOfUser(userId: number): Signal<Message[]>{
-    return computed(() => {
-      console.log('compute for'+userId);
-      return this.messages().filter(message => message.to = userId);
-    })
   }
 }

@@ -16,9 +16,8 @@ export class MessageInputComponent {
 
   @HostListener('window:keydown.enter')
   sendMessage():void{
-    const recipientId = this.conversationDetails.recipientId;
-    if (this.text && recipientId) {
-      this.messagesService.sendMessageToUser(this.text, recipientId);
+    if (this.text) {
+      this.messagesService.sendMessageToUser(this.text, this.conversationDetails.recipient().id);
     }
 
     this.text = undefined;

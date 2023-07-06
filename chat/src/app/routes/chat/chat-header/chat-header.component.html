@@ -1,1 +1,5 @@
-<div class="h-[7vh]">Sending messages to: {{recipientUser()?.id}}</div>
+<div class="h-[10vh] flex items-center space-x-2">
+    <app-user-avatar [user]="conversationDetails.recipient()"/>
+    
+    <p class="font-semibold">{{conversationDetails.recipient().name}}</p>
+</div>

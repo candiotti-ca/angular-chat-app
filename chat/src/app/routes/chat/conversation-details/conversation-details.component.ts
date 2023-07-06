@@ -1,6 +1,8 @@
+import { UsersService } from './../../../services/users/users.service';
 import { NgFor } from '@angular/common';
-import { Component, Input, Signal, computed, inject } from '@angular/core';
+import { Component, Input, OnChanges, Signal, SimpleChanges, WritableSignal, computed, inject, signal } from '@angular/core';
 import { Message } from 'src/app/models/Message';
+import { User } from 'src/app/models/User';
 import { MessagesService } from 'src/app/services/messages/messages.service';
 import { ChatHeaderComponent } from '../chat-header/chat-header.component';
 import { MessageInputComponent } from '../message-input/message-input.component';
@@ -17,16 +19,24 @@ import { MessagePreviewComponent } from '../message-preview/message-preview.comp
   ],
   templateUrl: './conversation-details.component.html'
 })
-export class ConversationDetailsComponent {
+export class ConversationDetailsComponent implements OnChanges {
+  private readonly usersService = inject(UsersService);
   private readonly messagesService = inject(MessagesService);
-  @Input({required:true}) recipientId?: number;//fixme input pas mis a jour, ou alors pas ecoute par le header et la conversation
+  @Input({required:true, alias: 'recipient'}) _recipient?: User;
+
+  readonly recipient: WritableSignal<User> = signal({} as any);
 
   readonly messages: Signal<Message[]> = computed(() => {
-    const tmp = this.recipientId;
-    if (tmp) {
-      return this.messagesService.getMessagesOfUser(tmp)();//fixme
-    }
-    
-    return [];
+    const expeditor = this.usersService.loggedInUser();
+    const recipient = this.recipient();
+
+    return this.messagesService.messages().filter(message => 
+      (message.from == expeditor.id && message.to == recipient.id)
+      || (message.to == expeditor.id && message.from == recipient.id)
+    );
   });
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.recipient.set(changes['_recipient'].currentValue);
+  }
 }

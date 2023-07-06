@@ -1,10 +1,13 @@
-<div class="flex">
+<div class="flex h-full">
     <div class="w-[20vw] flex flex-col justify-between items-center">
-        <div>
-            <app-conversation-preview *ngFor="let user of recipients" [user]="user" (click)="selectConversation(user.id)" class="hover:cursor-pointer"/>
+        <div class="w-full">
+            <app-conversation-preview *ngFor="let user of recipients" [user]="user" (click)="selectConversation(user)" class="hover:cursor-pointer"/>
+            <hr class="solid">
         </div>
-        <button class="rounded-full w-[40px] h-[40px] bg-purple-500" (click)="newConversation()"></button>
+        <button class="rounded-full w-[40px] h-[40px] bg-purple-500" (click)="newConversation()">
+            <span class="text-white text-2xl">+</span>
+        </button>
     </div>
 
-    <app-conversation-details *ngIf="selectedRecipientId()" [recipientId]="selectedRecipientId()"/>
+    <app-conversation-details *ngIf="selectedRecipient() as recipient" [recipient]="recipient"/>
 </div>

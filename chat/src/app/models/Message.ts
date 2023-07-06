@@ -3,4 +3,5 @@ export interface Message{
     from:number;
     to:number;
     date:Date;
+    read:boolean;
 }

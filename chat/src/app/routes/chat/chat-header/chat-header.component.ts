@@ -1,15 +1,13 @@
-import { Component, computed, inject } from '@angular/core';
-import { UsersService } from 'src/app/services/users/users.service';
+import { Component, inject } from '@angular/core';
 import { ConversationDetailsComponent } from '../conversation-details/conversation-details.component';
+import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 
 @Component({
   selector: 'app-chat-header',
   standalone: true,
+  imports:[UserAvatarComponent],
   templateUrl: './chat-header.component.html'
 })
 export class ChatHeaderComponent {
-  private readonly conversationDetails = inject(ConversationDetailsComponent);
-  private readonly usersService = inject(UsersService);
-
-  recipientUser = computed(() => this.usersService.recipients().find(user => user.id == this.conversationDetails.recipientId));
+  readonly conversationDetails = inject(ConversationDetailsComponent);
 }
