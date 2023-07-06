@@ -1,7 +1,7 @@
 <div>
     <app-chat-header />
     
-    <div class="bg-slate-100 px-[30vw]"> 
+    <div class="bg-gray-50 px-[30vw]"> 
         <div class="h-[83vh] overflow-y-auto">
             <div *ngFor="let message of messages()" class="mb-8">
                 <app-message-preview [message]="message"/>

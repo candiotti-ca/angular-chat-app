@@ -20,4 +20,11 @@ export class MessagesService {
       read: false
     }));
   }
+
+  static getConversation(messages:Message[], from:number, to:number):Message[]{
+    return messages.filter(message => 
+      (message.from == from && message.to == to)
+      || (message.to == from && message.from == to)
+    );
+  }
 }

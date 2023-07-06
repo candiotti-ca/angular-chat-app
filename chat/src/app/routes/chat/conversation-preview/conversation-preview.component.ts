@@ -4,6 +4,7 @@ import { Message } from 'src/app/models/Message';
 import { User } from 'src/app/models/User';
 import { MessagesService } from 'src/app/services/messages/messages.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { UsersService } from './../../../services/users/users.service';
 
 @Component({
   selector: 'app-conversation-preview',
@@ -12,14 +13,18 @@ import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
   templateUrl: './conversation-preview.component.html'
 })
 export class ConversationPreviewComponent {
+  private readonly usersService = inject(UsersService);
   private readonly messagesService = inject(MessagesService);
-  @Input({required: true}) user?: User;
+  @Input({required: true}) recipient?: User;
 
   readonly lastMessage: Signal<Message|undefined> = computed(() => {
-    if (this.user) {
-      const messagesOfUser = this.messagesService.messages().filter(message => message.from == this.user!.id);
-      return messagesOfUser[messagesOfUser.length - 1];
+    const expeditor = this.usersService.loggedInUser();
+    
+    if (this.recipient) {
+      const conversation = MessagesService.getConversation(this.messagesService.messages(), expeditor.id, this.recipient.id);
+      return conversation.sort((msgA, msgB) => msgB.date.getTime() - msgA.date.getTime())[0];
     }
+
     return undefined;
   });
 }

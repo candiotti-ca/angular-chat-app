@@ -30,10 +30,7 @@ export class ConversationDetailsComponent implements OnChanges {
     const expeditor = this.usersService.loggedInUser();
     const recipient = this.recipient();
 
-    return this.messagesService.messages().filter(message => 
-      (message.from == expeditor.id && message.to == recipient.id)
-      || (message.to == expeditor.id && message.from == recipient.id)
-    );
+    return MessagesService.getConversation(this.messagesService.messages(), expeditor.id, recipient.id);
   });
 
   ngOnChanges(changes: SimpleChanges): void {

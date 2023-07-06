@@ -1,7 +1,7 @@
 <div class="flex h-full">
     <div class="w-[20vw] flex flex-col justify-between items-center">
         <div class="w-full">
-            <app-conversation-preview *ngFor="let user of recipients" [user]="user" (click)="selectConversation(user)" class="hover:cursor-pointer"/>
+            <app-conversation-preview *ngFor="let user of recipients" [recipient]="user" (click)="selectConversation(user)" class="hover:cursor-pointer"/>
             <hr class="solid">
         </div>
         <button class="rounded-full w-[40px] h-[40px] bg-purple-500" (click)="newConversation()">
