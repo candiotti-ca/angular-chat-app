@@ -28,3 +28,7 @@ export class ConversationPreviewComponent {
     return undefined;
   });
 }
+
+//todo temoin lu ou pas
+//todo temoin nombre notifs
+//todo temoin en ligne
