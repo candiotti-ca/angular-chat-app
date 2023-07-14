@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { Component, Input, Signal, computed, inject } from '@angular/core';
 import { Message } from 'src/app/models/Message';
 import { User } from 'src/app/models/User';
@@ -9,7 +9,7 @@ import { UsersService } from './../../../services/users/users.service';
 @Component({
   selector: 'app-conversation-preview',
   standalone: true,
-  imports: [DatePipe, UserAvatarComponent],
+  imports: [NgIf, DatePipe, UserAvatarComponent],
   templateUrl: './conversation-preview.component.html'
 })
 export class ConversationPreviewComponent {
@@ -23,6 +23,17 @@ export class ConversationPreviewComponent {
     if (this.recipient) {
       const conversation = MessagesService.getConversation(this.messagesService.messages(), expeditor.id, this.recipient.id);
       return conversation.sort((msgA, msgB) => msgB.date.getTime() - msgA.date.getTime())[0];
+    }
+
+    return undefined;
+  });
+
+  readonly isLastMessageFromMe: Signal<Boolean|undefined> = computed(() => {
+    const expeditor = this.usersService.loggedInUser();
+    const lastMessage = this.lastMessage();
+    
+    if (lastMessage) {
+      return lastMessage.from == expeditor.id;
     }
 
     return undefined;

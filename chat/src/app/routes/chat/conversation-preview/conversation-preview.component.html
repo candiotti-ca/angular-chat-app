@@ -7,11 +7,13 @@
             <span class="text-sm text-slate-700 mx-2">{{lastMessage()?.date | date: 'shortTime'}}</span>
         </div>
 
-        <div class="flex justify-between">
-            <span class="text-sm text-slate-700">V</span>
-            <span class="text-sm text-slate-700">{{lastMessage()?.content || 'Pas de message'}}</span>
-    
-            <div class="rounded-full bg-purple-500 text-white h-[20px] w-[20px] flex items-center justify-center text-xs">2</div>
+        <div class="flex justify-between px-2">
+            <div class="flex">
+                <span *ngIf="isLastMessageFromMe()" class="text-sm text-slate-700">V</span>
+                <span class="text-sm text-slate-700 text-left">{{lastMessage()?.content || 'Pas de message'}}</span>
+            </div>
+            
+            <div *ngIf="isLastMessageFromMe() == false" class="rounded-full bg-purple-500 text-white h-[20px] w-[20px] flex items-center justify-center text-xs">2</div>
         </div>
     </div>
 </div>
